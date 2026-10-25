@@ -1,0 +1,28 @@
+
+===== input/grammar1.txt =====
+FIRST Sets:
+{Second=[b], Start=[a, b], First=[epsilon, a]}
+
+FOLLOW Sets:
+{Second=[$], Start=[$], First=[b]}
+
+===== input/grammar2.txt =====
+FIRST Sets:
+{Expr=[(, id], ExprPrime=[epsilon, +], Factor=[(, id], Term=[(, id], TermPrime=[epsilon, *]}
+
+FOLLOW Sets:
+{Expr=[$, )], ExprPrime=[$, )], Factor=[$, ), *, +], Term=[$, ), +], TermPrime=[$, ), +]}
+
+===== input/grammar3.txt =====
+FIRST Sets:
+{Cond=[b], StmtDoublePrime=[b], StmtDoublePrimeDoublePrime=[then], StmtDoublePrimeDoublePrimeDoublePrime=[a, if], StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime=[epsilon, else], Stmt=[a, if]}
+
+FOLLOW Sets:
+{Cond=[], StmtDoublePrime=[$, else], StmtDoublePrimeDoublePrime=[$, else], StmtDoublePrimeDoublePrimeDoublePrime=[$, else], StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime=[$, else], Stmt=[$, else]}
+
+===== input/grammar4.txt =====
+FIRST Sets:
+{AlphaPrime=[epsilon, a, c], Start=[a, b, c], Alpha=[epsilon, a, b, c]}
+
+FOLLOW Sets:
+{AlphaPrime=[a], Start=[$], Alpha=[a]}

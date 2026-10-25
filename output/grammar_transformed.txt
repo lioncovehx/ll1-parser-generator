@@ -1,0 +1,29 @@
+
+===== input/grammar1.txt =====
+--- Transformed Grammar ---
+Start -> First Second
+First -> a | epsilon
+Second -> b
+
+===== input/grammar2.txt =====
+--- Transformed Grammar ---
+Expr -> Term ExprPrime
+Term -> Factor TermPrime
+Factor -> ( Expr ) | id
+ExprPrime -> + Term ExprPrime | epsilon
+TermPrime -> * Factor TermPrime | epsilon
+
+===== input/grammar3.txt =====
+--- Transformed Grammar ---
+Stmt -> if StmtDoublePrime | a
+Cond -> b
+StmtDoublePrime -> b StmtDoublePrimeDoublePrime
+StmtDoublePrimeDoublePrime -> then StmtDoublePrimeDoublePrimeDoublePrime
+StmtDoublePrimeDoublePrimeDoublePrime -> if StmtDoublePrime StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime | a StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime
+StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime -> epsilon | else Stmt
+
+===== input/grammar4.txt =====
+--- Transformed Grammar ---
+Start -> Alpha a | b
+Alpha -> b d AlphaPrime | AlphaPrime
+AlphaPrime -> c AlphaPrime | a d AlphaPrime | epsilon

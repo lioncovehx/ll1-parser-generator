@@ -1,0 +1,254 @@
+
+===== input/grammar1.txt — Valid Inputs =====
+
+Input: "a b"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Start]                          | a                    | Start -> First Second
+2      | [$, Second, First]                  | a                    | First -> a
+3      | [$, Second, a]                      | a                    | Match a
+4      | [$, Second]                         | b                    | Second -> b
+5      | [$, b]                              | b                    | Match b
+6      | [$]                                 | $                    | Accept
+
+--- Parse Tree ---
+└── Start
+    ├── First
+    │   └── a
+    └── Second
+        └── b
+
+Input: "b"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Start]                          | b                    | Start -> First Second
+2      | [$, Second, First]                  | b                    | First -> epsilon
+3      | [$, Second]                         | b                    | Second -> b
+4      | [$, b]                              | b                    | Match b
+5      | [$]                                 | $                    | Accept
+
+--- Parse Tree ---
+└── Start
+    ├── First
+    │   └── epsilon
+    └── Second
+        └── b
+
+===== input/grammar2.txt — Valid Inputs =====
+
+Input: "id + id"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Expr]                           | id                   | Expr -> Term ExprPrime
+2      | [$, ExprPrime, Term]                | id                   | Term -> Factor TermPrime
+3      | [$, ExprPrime, TermPrime, Factor]   | id                   | Factor -> id
+4      | [$, ExprPrime, TermPrime, id]       | id                   | Match id
+5      | [$, ExprPrime, TermPrime]           | +                    | TermPrime -> epsilon
+6      | [$, ExprPrime]                      | +                    | ExprPrime -> + Term ExprPrime
+7      | [$, ExprPrime, Term, +]             | +                    | Match +
+8      | [$, ExprPrime, Term]                | id                   | Term -> Factor TermPrime
+9      | [$, ExprPrime, TermPrime, Factor]   | id                   | Factor -> id
+10     | [$, ExprPrime, TermPrime, id]       | id                   | Match id
+11     | [$, ExprPrime, TermPrime]           | $                    | TermPrime -> epsilon
+12     | [$, ExprPrime]                      | $                    | ExprPrime -> epsilon
+13     | [$]                                 | $                    | Accept
+
+--- Parse Tree ---
+└── Expr
+    ├── Term
+    │   ├── Factor
+    │   │   └── id
+    │   └── TermPrime
+    │       └── epsilon
+    └── ExprPrime
+        ├── +
+        ├── Term
+        │   ├── Factor
+        │   │   └── id
+        │   └── TermPrime
+        │       └── epsilon
+        └── ExprPrime
+            └── epsilon
+
+Input: "id * id"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Expr]                           | id                   | Expr -> Term ExprPrime
+2      | [$, ExprPrime, Term]                | id                   | Term -> Factor TermPrime
+3      | [$, ExprPrime, TermPrime, Factor]   | id                   | Factor -> id
+4      | [$, ExprPrime, TermPrime, id]       | id                   | Match id
+5      | [$, ExprPrime, TermPrime]           | *                    | TermPrime -> * Factor TermPrime
+6      | [$, ExprPrime, TermPrime, Factor, *] | *                    | Match *
+7      | [$, ExprPrime, TermPrime, Factor]   | id                   | Factor -> id
+8      | [$, ExprPrime, TermPrime, id]       | id                   | Match id
+9      | [$, ExprPrime, TermPrime]           | $                    | TermPrime -> epsilon
+10     | [$, ExprPrime]                      | $                    | ExprPrime -> epsilon
+11     | [$]                                 | $                    | Accept
+
+--- Parse Tree ---
+└── Expr
+    ├── Term
+    │   ├── Factor
+    │   │   └── id
+    │   └── TermPrime
+    │       ├── *
+    │       ├── Factor
+    │       │   └── id
+    │       └── TermPrime
+    │           └── epsilon
+    └── ExprPrime
+        └── epsilon
+
+Input: "( id + id ) * id"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Expr]                           | (                    | Expr -> Term ExprPrime
+2      | [$, ExprPrime, Term]                | (                    | Term -> Factor TermPrime
+3      | [$, ExprPrime, TermPrime, Factor]   | (                    | Factor -> ( Expr )
+4      | [$, ExprPrime, TermPrime, ), Expr, (] | (                    | Match (
+5      | [$, ExprPrime, TermPrime, ), Expr]  | id                   | Expr -> Term ExprPrime
+6      | [$, ExprPrime, TermPrime, ), ExprPrime, Term] | id                   | Term -> Factor TermPrime
+7      | [$, ExprPrime, TermPrime, ), ExprPrime, TermPrime, Factor] | id                   | Factor -> id
+8      | [$, ExprPrime, TermPrime, ), ExprPrime, TermPrime, id] | id                   | Match id
+9      | [$, ExprPrime, TermPrime, ), ExprPrime, TermPrime] | +                    | TermPrime -> epsilon
+10     | [$, ExprPrime, TermPrime, ), ExprPrime] | +                    | ExprPrime -> + Term ExprPrime
+11     | [$, ExprPrime, TermPrime, ), ExprPrime, Term, +] | +                    | Match +
+12     | [$, ExprPrime, TermPrime, ), ExprPrime, Term] | id                   | Term -> Factor TermPrime
+13     | [$, ExprPrime, TermPrime, ), ExprPrime, TermPrime, Factor] | id                   | Factor -> id
+14     | [$, ExprPrime, TermPrime, ), ExprPrime, TermPrime, id] | id                   | Match id
+15     | [$, ExprPrime, TermPrime, ), ExprPrime, TermPrime] | )                    | TermPrime -> epsilon
+16     | [$, ExprPrime, TermPrime, ), ExprPrime] | )                    | ExprPrime -> epsilon
+17     | [$, ExprPrime, TermPrime, )]        | )                    | Match )
+18     | [$, ExprPrime, TermPrime]           | *                    | TermPrime -> * Factor TermPrime
+19     | [$, ExprPrime, TermPrime, Factor, *] | *                    | Match *
+20     | [$, ExprPrime, TermPrime, Factor]   | id                   | Factor -> id
+21     | [$, ExprPrime, TermPrime, id]       | id                   | Match id
+22     | [$, ExprPrime, TermPrime]           | $                    | TermPrime -> epsilon
+23     | [$, ExprPrime]                      | $                    | ExprPrime -> epsilon
+24     | [$]                                 | $                    | Accept
+
+--- Parse Tree ---
+└── Expr
+    ├── Term
+    │   ├── Factor
+    │   │   ├── (
+    │   │   ├── Expr
+    │   │   │   ├── Term
+    │   │   │   │   ├── Factor
+    │   │   │   │   │   └── id
+    │   │   │   │   └── TermPrime
+    │   │   │   │       └── epsilon
+    │   │   │   └── ExprPrime
+    │   │   │       ├── +
+    │   │   │       ├── Term
+    │   │   │       │   ├── Factor
+    │   │   │       │   │   └── id
+    │   │   │       │   └── TermPrime
+    │   │   │       │       └── epsilon
+    │   │   │       └── ExprPrime
+    │   │   │           └── epsilon
+    │   │   └── )
+    │   └── TermPrime
+    │       ├── *
+    │       ├── Factor
+    │       │   └── id
+    │       └── TermPrime
+    │           └── epsilon
+    └── ExprPrime
+        └── epsilon
+
+===== input/grammar3.txt — Valid Inputs =====
+
+Input: "a"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Stmt]                           | a                    | Stmt -> a
+2      | [$, a]                              | a                    | Match a
+3      | [$]                                 | $                    | Accept
+
+--- Parse Tree ---
+└── Stmt
+    └── a
+
+Input: "if b then a"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Stmt]                           | if                   | Stmt -> if StmtDoublePrime
+2      | [$, StmtDoublePrime, if]            | if                   | Match if
+3      | [$, StmtDoublePrime]                | b                    | StmtDoublePrime -> b StmtDoublePrimeDoublePrime
+4      | [$, StmtDoublePrimeDoublePrime, b]  | b                    | Match b
+5      | [$, StmtDoublePrimeDoublePrime]     | then                 | StmtDoublePrimeDoublePrime -> then StmtDoublePrimeDoublePrimeDoublePrime
+6      | [$, StmtDoublePrimeDoublePrimeDoublePrime, then] | then                 | Match then
+7      | [$, StmtDoublePrimeDoublePrimeDoublePrime] | a                    | StmtDoublePrimeDoublePrimeDoublePrime -> a StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime
+8      | [$, StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime, a] | a                    | Match a
+9      | [$, StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime] | $                    | StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime -> epsilon
+10     | [$]                                 | $                    | Accept
+
+--- Parse Tree ---
+└── Stmt
+    ├── if
+    └── StmtDoublePrime
+        ├── b
+        └── StmtDoublePrimeDoublePrime
+            ├── then
+            └── StmtDoublePrimeDoublePrimeDoublePrime
+                ├── a
+                └── StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime
+                    └── epsilon
+
+===== input/grammar4.txt — Valid Inputs =====
+
+Input: "b"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Start]                          | b                    | Start -> Alpha a
+2      | [$, a, Alpha]                       | b                    | Alpha -> b d AlphaPrime
+3      | [$, a, AlphaPrime, d, b]            | b                    | Match b
+4      | [$, a, AlphaPrime, d]               | $                    | 
+--- ERROR DETECTED (Step 4) ---
+Type    : Terminal Mismatch
+Expected: d
+Found   : '$'
+5      | [$, a, AlphaPrime]                  | $                    | 
+--- ERROR DETECTED (Step 5) ---
+Type    : Empty Table Entry
+Expected: [a, c]
+Found   : '$'
+Action: Skipping unexpected token '$'.
+
+Input: "a"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Start]                          | a                    | Start -> Alpha a
+2      | [$, a, Alpha]                       | a                    | Alpha -> AlphaPrime
+3      | [$, a, AlphaPrime]                  | a                    | AlphaPrime -> a d AlphaPrime
+4      | [$, a, AlphaPrime, d, a]            | a                    | Match a
+5      | [$, a, AlphaPrime, d]               | $                    | 
+--- ERROR DETECTED (Step 5) ---
+Type    : Terminal Mismatch
+Expected: d
+Found   : '$'
+6      | [$, a, AlphaPrime]                  | $                    | 
+--- ERROR DETECTED (Step 6) ---
+Type    : Empty Table Entry
+Expected: [a, c]
+Found   : '$'
+Action: Skipping unexpected token '$'.

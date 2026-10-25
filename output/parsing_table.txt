@@ -1,0 +1,41 @@
+
+===== input/grammar1.txt =====
+Non-Terminal        | a                        | b                        
+--------------------------------------------------------------------------
+Second              |                          | Second -> b              
+Start               | Start -> First Second    | Start -> First Second    
+First               | First -> a               | First -> epsilon         
+
+Grammar is LL(1): YES
+
+===== input/grammar2.txt =====
+Non-Terminal        | $                        | (                        | )                        | *                        | +                        | id                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Expr                |                          | Expr -> Term ExprPrime   |                          |                          |                          | Expr -> Term ExprPrime   
+ExprPrime           | ExprPrime -> epsilon     |                          | ExprPrime -> epsilon     |                          | ExprPrime -> + Term ExprPrime|                          
+Factor              |                          | Factor -> ( Expr )       |                          |                          |                          | Factor -> id             
+Term                |                          | Term -> Factor TermPrime |                          |                          |                          | Term -> Factor TermPrime 
+TermPrime           | TermPrime -> epsilon     |                          | TermPrime -> epsilon     | TermPrime -> * Factor TermPrime| TermPrime -> epsilon     |                          
+
+Grammar is LL(1): YES
+
+===== input/grammar3.txt =====
+Non-Terminal        | $                        | a                        | b                        | else                     | if                       | then                     
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Cond                |                          |                          | Cond -> b                |                          |                          |                          
+StmtDoublePrime     |                          |                          | StmtDoublePrime -> b StmtDoublePrimeDoublePrime|                          |                          |                          
+StmtDoublePrimeDoublePrime|                          |                          |                          |                          |                          | StmtDoublePrimeDoublePrime -> then StmtDoublePrimeDoublePrimeDoublePrime
+StmtDoublePrimeDoublePrimeDoublePrime|                          | StmtDoublePrimeDoublePrimeDoublePrime -> a StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime|                          |                          | StmtDoublePrimeDoublePrimeDoublePrime -> if StmtDoublePrime StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime|                          
+StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime| StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime -> epsilon|                          |                          | StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime -> epsilon|                          |                          
+Stmt                |                          | Stmt -> a                |                          |                          | Stmt -> if StmtDoublePrime|                          
+
+Grammar is LL(1): NO
+
+===== input/grammar4.txt =====
+Non-Terminal        | $                        | a                        | b                        | c                        
+--------------------------------------------------------------------------------------------------------------------------------
+AlphaPrime          |                          | AlphaPrime -> a d AlphaPrime|                          | AlphaPrime -> c AlphaPrime
+Start               | Start -> Alpha a         | Start -> Alpha a         | Start -> Alpha a         | Start -> Alpha a         
+Alpha               |                          | Alpha -> AlphaPrime      | Alpha -> b d AlphaPrime  | Alpha -> AlphaPrime      
+
+Grammar is LL(1): NO

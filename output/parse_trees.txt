@@ -1,0 +1,58 @@
+
+===== input/grammar1.txt =====
+└── Start
+    ├── First
+    │   └── epsilon
+    └── Second
+        └── b
+
+===== input/grammar2.txt =====
+└── Expr
+    ├── Term
+    │   ├── Factor
+    │   │   ├── (
+    │   │   ├── Expr
+    │   │   │   ├── Term
+    │   │   │   │   ├── Factor
+    │   │   │   │   │   └── id
+    │   │   │   │   └── TermPrime
+    │   │   │   │       └── epsilon
+    │   │   │   └── ExprPrime
+    │   │   │       ├── +
+    │   │   │       ├── Term
+    │   │   │       │   ├── Factor
+    │   │   │       │   │   └── id
+    │   │   │       │   └── TermPrime
+    │   │   │       │       └── epsilon
+    │   │   │       └── ExprPrime
+    │   │   │           └── epsilon
+    │   │   └── )
+    │   └── TermPrime
+    │       ├── *
+    │       ├── Factor
+    │       │   └── id
+    │       └── TermPrime
+    │           └── epsilon
+    └── ExprPrime
+        └── epsilon
+
+===== input/grammar3.txt =====
+└── Stmt
+    ├── if
+    └── StmtDoublePrime
+        ├── b
+        └── StmtDoublePrimeDoublePrime
+            ├── then
+            └── StmtDoublePrimeDoublePrimeDoublePrime
+                ├── a
+                └── StmtDoublePrimeDoublePrimeDoublePrimeDoublePrime
+                    └── epsilon
+
+===== input/grammar4.txt =====
+└── Start
+    ├── Alpha
+    │   └── AlphaPrime
+    │       ├── a
+    │       ├── d
+    │       └── AlphaPrime
+    └── a

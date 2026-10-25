@@ -1,0 +1,181 @@
+
+===== input/grammar1.txt — Error Inputs =====
+
+Input: "c b"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Start]                          | c                    | 
+--- ERROR DETECTED (Step 1) ---
+Type    : Empty Table Entry
+Expected: [a, b]
+Found   : 'c'
+Action: Skipping unexpected token 'c'.
+2      | [$, Start]                          | b                    | Start -> First Second
+3      | [$, Second, First]                  | b                    | First -> epsilon
+4      | [$, Second]                         | b                    | Second -> b
+5      | [$, b]                              | b                    | Match b
+6      | [$]                                 | $                    | Accept
+
+Input: "a a"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Start]                          | a                    | Start -> First Second
+2      | [$, Second, First]                  | a                    | First -> a
+3      | [$, Second, a]                      | a                    | Match a
+4      | [$, Second]                         | a                    | 
+--- ERROR DETECTED (Step 4) ---
+Type    : Empty Table Entry
+Expected: [b]
+Found   : 'a'
+Action: Skipping unexpected token 'a'.
+5      | [$, Second]                         | $                    | 
+--- ERROR DETECTED (Step 5) ---
+Type    : Empty Table Entry
+Expected: [b]
+Found   : '$'
+Action: Found sync symbol '$' — popping stack.
+6      | [$]                                 | $                    | Accept
+
+===== input/grammar2.txt — Error Inputs =====
+
+Input: "id + * id"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Expr]                           | id                   | Expr -> Term ExprPrime
+2      | [$, ExprPrime, Term]                | id                   | Term -> Factor TermPrime
+3      | [$, ExprPrime, TermPrime, Factor]   | id                   | Factor -> id
+4      | [$, ExprPrime, TermPrime, id]       | id                   | Match id
+5      | [$, ExprPrime, TermPrime]           | +                    | TermPrime -> epsilon
+6      | [$, ExprPrime]                      | +                    | ExprPrime -> + Term ExprPrime
+7      | [$, ExprPrime, Term, +]             | +                    | Match +
+8      | [$, ExprPrime, Term]                | *                    | 
+--- ERROR DETECTED (Step 8) ---
+Type    : Empty Table Entry
+Expected: [(, id]
+Found   : '*'
+Action: Skipping unexpected token '*'.
+9      | [$, ExprPrime, Term]                | id                   | Term -> Factor TermPrime
+10     | [$, ExprPrime, TermPrime, Factor]   | id                   | Factor -> id
+11     | [$, ExprPrime, TermPrime, id]       | id                   | Match id
+12     | [$, ExprPrime, TermPrime]           | $                    | TermPrime -> epsilon
+13     | [$, ExprPrime]                      | $                    | ExprPrime -> epsilon
+14     | [$]                                 | $                    | Accept
+
+Input: "+ id"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Expr]                           | +                    | 
+--- ERROR DETECTED (Step 1) ---
+Type    : Empty Table Entry
+Expected: [(, id]
+Found   : '+'
+Action: Skipping unexpected token '+'.
+2      | [$, Expr]                           | id                   | Expr -> Term ExprPrime
+3      | [$, ExprPrime, Term]                | id                   | Term -> Factor TermPrime
+4      | [$, ExprPrime, TermPrime, Factor]   | id                   | Factor -> id
+5      | [$, ExprPrime, TermPrime, id]       | id                   | Match id
+6      | [$, ExprPrime, TermPrime]           | $                    | TermPrime -> epsilon
+7      | [$, ExprPrime]                      | $                    | ExprPrime -> epsilon
+8      | [$]                                 | $                    | Accept
+
+===== input/grammar3.txt — Error Inputs =====
+
+Input: "if b a"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Stmt]                           | if                   | Stmt -> if StmtDoublePrime
+2      | [$, StmtDoublePrime, if]            | if                   | Match if
+3      | [$, StmtDoublePrime]                | b                    | StmtDoublePrime -> b StmtDoublePrimeDoublePrime
+4      | [$, StmtDoublePrimeDoublePrime, b]  | b                    | Match b
+5      | [$, StmtDoublePrimeDoublePrime]     | a                    | 
+--- ERROR DETECTED (Step 5) ---
+Type    : Empty Table Entry
+Expected: [then]
+Found   : 'a'
+Action: Skipping unexpected token 'a'.
+6      | [$, StmtDoublePrimeDoublePrime]     | $                    | 
+--- ERROR DETECTED (Step 6) ---
+Type    : Empty Table Entry
+Expected: [then]
+Found   : '$'
+Action: Found sync symbol '$' — popping stack.
+7      | [$]                                 | $                    | Accept
+
+Input: "if b then"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Stmt]                           | if                   | Stmt -> if StmtDoublePrime
+2      | [$, StmtDoublePrime, if]            | if                   | Match if
+3      | [$, StmtDoublePrime]                | b                    | StmtDoublePrime -> b StmtDoublePrimeDoublePrime
+4      | [$, StmtDoublePrimeDoublePrime, b]  | b                    | Match b
+5      | [$, StmtDoublePrimeDoublePrime]     | then                 | StmtDoublePrimeDoublePrime -> then StmtDoublePrimeDoublePrimeDoublePrime
+6      | [$, StmtDoublePrimeDoublePrimeDoublePrime, then] | then                 | Match then
+7      | [$, StmtDoublePrimeDoublePrimeDoublePrime] | $                    | 
+--- ERROR DETECTED (Step 7) ---
+Type    : Empty Table Entry
+Expected: [a, if]
+Found   : '$'
+Action: Found sync symbol '$' — popping stack.
+8      | [$]                                 | $                    | Accept
+
+===== input/grammar4.txt — Error Inputs =====
+
+Input: "d"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Start]                          | d                    | 
+--- ERROR DETECTED (Step 1) ---
+Type    : Empty Table Entry
+Expected: [a, b, c, $]
+Found   : 'd'
+Action: Skipping unexpected token 'd'.
+2      | [$, Start]                          | $                    | Start -> Alpha a
+3      | [$, a, Alpha]                       | $                    | 
+--- ERROR DETECTED (Step 3) ---
+Type    : Empty Table Entry
+Expected: [a, b, c]
+Found   : '$'
+Action: Skipping unexpected token '$'.
+
+Input: "a b c"
+
+--- Parsing Trace ---
+Step   | Stack                               | Input                | Action
+------------------------------------------------------------------------------------------
+1      | [$, Start]                          | a                    | Start -> Alpha a
+2      | [$, a, Alpha]                       | a                    | Alpha -> AlphaPrime
+3      | [$, a, AlphaPrime]                  | a                    | AlphaPrime -> a d AlphaPrime
+4      | [$, a, AlphaPrime, d, a]            | a                    | Match a
+5      | [$, a, AlphaPrime, d]               | b                    | 
+--- ERROR DETECTED (Step 5) ---
+Type    : Terminal Mismatch
+Expected: d
+Found   : 'b'
+6      | [$, a, AlphaPrime]                  | b                    | 
+--- ERROR DETECTED (Step 6) ---
+Type    : Empty Table Entry
+Expected: [a, c]
+Found   : 'b'
+Action: Skipping unexpected token 'b'.
+7      | [$, a, AlphaPrime]                  | c                    | AlphaPrime -> c AlphaPrime
+8      | [$, a, AlphaPrime, c]               | c                    | Match c
+9      | [$, a, AlphaPrime]                  | $                    | 
+--- ERROR DETECTED (Step 9) ---
+Type    : Empty Table Entry
+Expected: [a, c]
+Found   : '$'
+Action: Skipping unexpected token '$'.
